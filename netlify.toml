@@ -15,8 +15,6 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-  [plugins.inputs]
-    publish = ".next"
 
 [context.production.environment]
   NODE_ENV = "production"
