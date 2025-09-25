@@ -5,6 +5,43 @@
 :root {
   --background: #ffffff;
   --foreground: #000000;
+  --font-host-grotesk: 'Host Grotesk', sans-serif;
+}
+
+/* Regular */
+@font-face {
+  font-family: 'Host Grotesk';
+  src: url('/fonts/HostGrotesk-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Medium */
+@font-face {
+  font-family: 'Host Grotesk';
+  src: url('/fonts/HostGrotesk-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* SemiBold */
+@font-face {
+  font-family: 'Host Grotesk';
+  src: url('/fonts/HostGrotesk-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Bold */
+@font-face {
+  font-family: 'Host Grotesk';
+  src: url('/fonts/HostGrotesk-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
 html,
@@ -15,7 +52,13 @@ body {
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: var(--font-poppins), sans-serif;
+  font-family: var(--font-host-grotesk), sans-serif;
+  font-optical-sizing: auto;
+}
+
+.host-grotesk {
+  font-family: var(--font-host-grotesk), sans-serif;
+  font-optical-sizing: auto;
 }
 
 .dark {

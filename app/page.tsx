@@ -1,5 +1,6 @@
 import Hero from "@/components/hero";
 import ScrollMarquee from "@/components/scrollmarquee";
+import Navbar from "@/components/Navbar";
 
 export default function Home() {
   return (
