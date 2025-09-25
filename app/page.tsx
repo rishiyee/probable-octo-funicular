@@ -1,5 +1,5 @@
-import Hero from "@/components/Hero";
-import ScrollMarquee from "@/components/ScrollMarquee";
+import Hero from "@/components/hero";
+import ScrollMarquee from "@/components/scrollmarquee";
 
 export default function Home() {
   return (
@@ -7,21 +7,11 @@ export default function Home() {
       <Hero />
       <div className="flex flex-col py-20 items-center justify-center">
         <ScrollMarquee
-          texts={[
-            "UI Design",
-            "Prototype",
-            "Frontend Design",
-            "UX Research",
-            "Motion Graphics",
-          ]}
+          text="UI Design • Prototype • Frontend Design • UX Research • Motion Graphics"
           baseSpeed={0.9}
           multiplier={2}
         />
-
-
-
       </div>
-
     </main>
   );
 }
