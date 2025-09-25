@@ -10,13 +10,16 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "autoprefixer": "^10.4.14",
     "clsx": "^2.1.1",
     "lucide-react": "^0.544.0",
     "next": "13.5.4",
     "next-themes": "^0.4.6",
+    "postcss": "^8.4.24",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tailwind-merge": "^3.3.1",
+    "tailwindcss": "^3.4.7",
     "tailwindcss-animate": "^1.0.7"
   },
   "engines": {
@@ -26,15 +29,12 @@
   "devDependencies": {
     "@types/node": "24.5.2",
     "@types/react": "19.1.13",
-    "autoprefixer": "^10.4.14",
     "eslint": "^8.46.0",
     "eslint-config-next": "13.5.4",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "postcss": "^8.4.24",
     "prettier": "^2.8.8",
-    "tailwindcss": "^3.4.7",
     "typescript": "5.9.2"
   }
 }

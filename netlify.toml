@@ -1,18 +1,25 @@
 [build]
-  command = "npm run build"
+  command = "npm ci && npm run build"
   publish = ".next"
 
 [build.environment]
   NODE_VERSION = "18.17.1"
   NPM_VERSION = "9.6.7"
+  NODE_OPTIONS = "--max_old_space_size=4096"
 
 [dev]
   command = "npm run dev"
   port = 3000
   publish = ".next"
+  targetPort = 3000
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+  [plugins.inputs]
+    publish = ".next"
 
 [context.production.environment]
   NODE_ENV = "production"
+
+[functions]
+  node_bundler = "esbuild"
