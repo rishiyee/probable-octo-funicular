@@ -10,14 +10,7 @@
 [dev]
   command = "npm run dev"
   port = 3000
-  publish = ".next"
   targetPort = 3000
-
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
 
 [context.production.environment]
   NODE_ENV = "production"
-
-[functions]
-  node_bundler = "esbuild"

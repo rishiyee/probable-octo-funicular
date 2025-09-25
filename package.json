@@ -27,6 +27,7 @@
     "npm": ">=9.6.7 <10"
   },
   "devDependencies": {
+    "@netlify/plugin-nextjs": "^5.13.3",
     "@types/node": "24.5.2",
     "@types/react": "19.1.13",
     "eslint": "^8.46.0",
