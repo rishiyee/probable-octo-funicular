@@ -1,6 +1,7 @@
 import Hero from "@/components/hero";
 import ScrollMarquee from "@/components/scrollmarquee";
 import Navbar from "@/components/Navbar";
+import SkillSection from "@/components/SkillSection";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
           multiplier={2}
         />
       </div>
+      <SkillSection />
     </main>
   );
 }
