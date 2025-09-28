@@ -19,13 +19,6 @@ export default function Home() {
       <WorksSection />
       <SkillSectionFilmstrip />
       <Footer />
-      <FallingImages
-        images={["figma.png", "figma.png", "figma.png"]}
-        trigger="auto"
-        gravity={1.2}
-        wireframes={false}
-        imageWidth={100}
-      />
     </main>
   );
 }
