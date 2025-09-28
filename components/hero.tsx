@@ -1,28 +1,29 @@
 import Image from "next/image";
+import Navbar from "./Navbar";
+import GlassButton from "./GlassButton";
 
 export default function Hero() {
   return (
     <section className="relative h-screen w-full">
-      <Image
-        src="/hero.png"
-        alt="Hero Background"
-        fill
-        priority
-        className="object-cover"
-      />
+      {/* Navbar */}
+      <Navbar />
+
+      {/* Background Image */}
+      <Image src="/hero.png" alt="Hero Background" fill priority className="object-cover" />
 
       {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[rgba(0,0,0,0)] to-[rgba(0,0,0,0.9)]"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/90 z-10"></div>
 
-      {/* Text container at bottom */}
-      <div className="relative z-10 flex h-full items-end text-left text-white p-20 xxl:px-40 gap-8">
-        <h1 className="flex-[3] text-[126px] md:text-[126px] font-normal leading-tight">
+      {/* Text container */}
+      <div className="relative z-20 flex h-full items-end text-left text-white px-20 2xl:px-20 gap-8 pb-20">
+        <h1 className="flex-[3] text-[126px] md:text-[96px] font-normal leading-tight">
           Design beyond<br />Imagination
         </h1>
-        <p className="flex-[1] text-[24px] md:text-[24px] leading-snug">
+        <p className="flex-[1] text-[24px] md:text-[20px] leading-snug">
           Discover amazing products and experiences tailored just for you.
         </p>
       </div>
+
     </section>
   );
 }
