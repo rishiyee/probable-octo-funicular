@@ -11,11 +11,11 @@ export default function Home() {
     <main className="bg-black min-h-screen flex flex-col">
       <Hero />
       <AboutSection />
+      <Work />
+      <WorksSection />
       <div className="flex flex-col py-20 items-center justify-center">
         <ScrollMarquee text="UI Design • Prototype • Frontend Design • UX Research • Motion Graphics" />
       </div>
-      <Work />
-      <WorksSection />
       <SkillSectionFilmstrip />
       <Footer />
     </main>
