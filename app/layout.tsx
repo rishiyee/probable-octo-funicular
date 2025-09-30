@@ -1,8 +1,6 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import localFont from 'next/font/local';
-import { ThemeProvider } from '@/components/ThemeProvider'
-import Navbar from '@/components/Navbar'
+import localFont from 'next/font/local'
 
 // Add Host Grotesk font
 const hostGrotesk = localFont({
@@ -14,13 +12,13 @@ const hostGrotesk = localFont({
   ],
   variable: '--font-host-grotesk',
   display: 'swap',
-});
+})
 
 export const metadata: Metadata = {
   title: 'rishiyee',
   description: 'Minimal starter with Tailwind and Host Grotesk font',
   icons: {
-    icon: '/faviconfff.svg',       // favicon from public folder
+    icon: '/faviconfff.svg',
     shortcut: '/faviconfff.svg',
     apple: '/faviconfff.svg',
   },
@@ -30,10 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={hostGrotesk.variable}>
       <body className="host-grotesk bg-background text-foreground">
-        <ThemeProvider>
-          <Navbar />
-          {children}
-        </ThemeProvider>
+        {children}
       </body>
     </html>
   )
