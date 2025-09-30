@@ -118,7 +118,7 @@ export default function ScrollMarquee({
         className="
           flex will-change-transform whitespace-nowrap 
           cursor-grab active:cursor-grabbing
-          text-3xl sm:text-5xl md:text-7xl lg:text-9xl font-normal tracking-tight
+          text-3xl sm:text-5xl px-20 md:text-7xl lg:text-9xl font-normal tracking-tight
           transition-transform duration-300 ease-out
         "
       >

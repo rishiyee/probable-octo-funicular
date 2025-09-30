@@ -6,6 +6,7 @@ import Matter from "matter-js";
 interface FallingTextProps {
   text?: string;
   highlightWords?: string[];
+  trigger?: "auto" | "scroll" | "click" | "hover";
   backgroundColor?: string;
   wireframes?: boolean;
   gravity?: number;
@@ -13,54 +14,67 @@ interface FallingTextProps {
   fontSize?: string;
 }
 
-export default function FallingText({
+const FallingText: React.FC<FallingTextProps> = ({
   text = "",
   highlightWords = [],
+  trigger = "auto",
   backgroundColor = "transparent",
   wireframes = false,
-  gravity = 0.5,
+  gravity = 1,
   mouseConstraintStiffness = 0.2,
-  fontSize = "2rem",
-}: FallingTextProps) {
+  fontSize = "1rem",
+}) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const textRef = useRef<HTMLDivElement | null>(null);
   const canvasContainerRef = useRef<HTMLDivElement | null>(null);
 
   const [effectStarted, setEffectStarted] = useState(false);
 
-  // Render text with highlight
+  // Split text and wrap highlighted words
   useEffect(() => {
     if (!textRef.current) return;
     const words = text.split(" ");
-
     const newHTML = words
       .map((word) => {
-        const isHighlighted = highlightWords.some((hw) =>
-          word.startsWith(hw)
-        );
+        const isHighlighted = highlightWords.some((hw) => word.startsWith(hw));
         return `<span
-          class="inline-block mx-[2px] select-none ${
-            isHighlighted ? "text-cyan-500 font-bold" : ""
-          }"
+          class="inline-block mx-[2px] select-none ${isHighlighted ? 'text-cyan-500 font-bold' : ''}"
         >
           ${word}
         </span>`;
       })
       .join(" ");
-
     textRef.current.innerHTML = newHTML;
   }, [text, highlightWords]);
 
-  // Physics effect
+  // Trigger effect based on prop
+  useEffect(() => {
+    if (trigger === "auto") {
+      setEffectStarted(true);
+      return;
+    }
+    if (trigger === "scroll" && containerRef.current) {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setEffectStarted(true);
+            observer.disconnect();
+          }
+        },
+        { threshold: 0.1 }
+      );
+      observer.observe(containerRef.current);
+      return () => observer.disconnect();
+    }
+  }, [trigger]);
+
+  // Initialize Matter.js
   useEffect(() => {
     if (!effectStarted) return;
 
-    const { Engine, Render, World, Bodies, Runner, Mouse, MouseConstraint } =
-      Matter;
+    const { Engine, Render, World, Bodies, Runner, Mouse, MouseConstraint } = Matter;
 
-    if (!containerRef.current || !canvasContainerRef.current) return;
-
-    const containerRect = containerRef.current.getBoundingClientRect();
+    const containerRect = containerRef.current!.getBoundingClientRect();
     const width = containerRect.width;
     const height = containerRect.height;
 
@@ -70,7 +84,7 @@ export default function FallingText({
     engine.world.gravity.y = gravity;
 
     const render = Render.create({
-      element: canvasContainerRef.current,
+      element: canvasContainerRef.current!,
       engine,
       options: {
         width,
@@ -80,20 +94,17 @@ export default function FallingText({
       },
     });
 
-    const boundaryOptions = {
-      isStatic: true,
-      render: { fillStyle: "transparent" },
-    };
+    // Boundaries
+    const boundaryOptions = { isStatic: true, render: { fillStyle: "transparent" } };
     const floor = Bodies.rectangle(width / 2, height + 25, width, 50, boundaryOptions);
     const leftWall = Bodies.rectangle(-25, height / 2, 50, height, boundaryOptions);
     const rightWall = Bodies.rectangle(width + 25, height / 2, 50, height, boundaryOptions);
     const ceiling = Bodies.rectangle(width / 2, -25, width, 50, boundaryOptions);
 
-    if (!textRef.current) return;
-    const wordSpans = textRef.current.querySelectorAll("span");
+    // Create Matter bodies for each word
+    const wordSpans = textRef.current!.querySelectorAll("span");
     const wordBodies = [...wordSpans].map((elem) => {
       const rect = elem.getBoundingClientRect();
-
       const x = rect.left - containerRect.left + rect.width / 2;
       const y = rect.top - containerRect.top + rect.height / 2;
 
@@ -103,61 +114,43 @@ export default function FallingText({
         frictionAir: 0.01,
         friction: 0.2,
       });
-      Matter.Body.setVelocity(body, {
-        x: (Math.random() - 0.5) * 5,
-        y: 0,
-      });
+
+      Matter.Body.setVelocity(body, { x: (Math.random() - 0.5) * 5, y: 0 });
       Matter.Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.05);
 
       return { elem, body };
     });
 
+    // Position elements
     wordBodies.forEach(({ elem, body }) => {
       elem.style.position = "absolute";
       elem.style.left = `${body.position.x}px`;
       elem.style.top = `${body.position.y}px`;
-      elem.style.transform = "none";
+      elem.style.transform = "translate(-50%, -50%)";
     });
 
-    // ✅ Use render.canvas for mouse
-    const mouse = Mouse.create(render.canvas);
+    // Mouse interaction
+    const mouse = Mouse.create(containerRef.current!);
     const mouseConstraint = MouseConstraint.create(engine, {
       mouse,
-      constraint: {
-        stiffness: mouseConstraintStiffness,
-        render: { visible: false },
-      },
+      constraint: { stiffness: mouseConstraintStiffness, render: { visible: false } },
     });
-
-    // ✅ Allow normal scroll (remove wheel/touch listeners)
-    mouse.element.removeEventListener("mousewheel", (mouse as any).mousewheel);
-    mouse.element.removeEventListener("DOMMouseScroll", (mouse as any).mousewheel);
-    mouse.element.removeEventListener("touchmove", (mouse as any).mousemove);
-
     render.mouse = mouse;
 
-    World.add(engine.world, [
-      floor,
-      leftWall,
-      rightWall,
-      ceiling,
-      mouseConstraint,
-      ...wordBodies.map((wb) => wb.body),
-    ]);
+    World.add(engine.world, [floor, leftWall, rightWall, ceiling, mouseConstraint, ...wordBodies.map(wb => wb.body)]);
 
     const runner = Runner.create();
     Runner.run(runner, engine);
     Render.run(render);
 
+    // Update loop
     const updateLoop = () => {
       wordBodies.forEach(({ body, elem }) => {
         const { x, y } = body.position;
         elem.style.left = `${x}px`;
         elem.style.top = `${y}px`;
         elem.style.transform = `translate(-50%, -50%) rotate(${body.angle}rad)`;
-        elem.style.color = "#fff";
       });
-      Matter.Engine.update(engine);
       requestAnimationFrame(updateLoop);
     };
     updateLoop();
@@ -168,29 +161,32 @@ export default function FallingText({
       if (render.canvas && canvasContainerRef.current) {
         canvasContainerRef.current.removeChild(render.canvas);
       }
-      World.clear(engine.world, false);
+      World.clear(engine.world);
       Engine.clear(engine);
     };
   }, [effectStarted, gravity, wireframes, backgroundColor, mouseConstraintStiffness]);
 
+  const handleTrigger = () => {
+    if (!effectStarted && (trigger === "click" || trigger === "hover")) {
+      setEffectStarted(true);
+    }
+  };
+
   return (
     <div
       ref={containerRef}
-      className="relative z-[1] w-full min-h-[50vh] cursor-pointer text-center pt-8"
-      onMouseEnter={() => setEffectStarted(true)} // Only trigger on hover
+      className="relative w-full h-full cursor-pointer text-center overflow-hidden"
+      onClick={trigger === "click" ? handleTrigger : undefined}
+      onMouseEnter={trigger === "hover" ? handleTrigger : undefined}
     >
       <div
         ref={textRef}
-        className="inline-block text-white"
-        style={{
-          fontSize,
-          lineHeight: 1.4,
-        }}
+        className="inline-block"
+        style={{ fontSize, lineHeight: 1.4 }}
       />
-      <div
-        className="absolute top-0 left-0 z-0"
-        ref={canvasContainerRef}
-      />
+      <div className="absolute top-0 left-0 z-0" ref={canvasContainerRef} />
     </div>
   );
-}
+};
+
+export default FallingText;
