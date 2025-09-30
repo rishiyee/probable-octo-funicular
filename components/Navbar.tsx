@@ -35,7 +35,7 @@ export default function Navbar() {
       className={`
         fixed top-0 left-0 w-full z-50 transition-transform duration-300
         ${show ? "translate-y-0" : "-translate-y-full"}
-        flex items-center justify-between px-20 2xl:px-40 py-5 pointer-events-auto
+        flex items-center justify-between px-10 2xl:px-20 2xl:py-10 pointer-events-auto
       `}
     >
       {/* Logo */}
