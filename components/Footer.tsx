@@ -29,7 +29,7 @@ export default function Footer() {
         <div className="flex flex-col gap-2 font-light">
           <h2 className="text-white/50 text-[24px] md:text-[36px]">Contact</h2>
           <a href="tel:+918547838091" className="text-white text-[24px] md:text-[36px] hover:underline">Phone: +91 8547 8380 91</a>
-          <a href="mailto:test@gmail.com" className="text-white text-[24px] md:text-[36px] hover:underline">Email: test@gmail.com</a>
+          <a href="mailto:test@gmail.com" className="text-white text-[24px] md:text-[36px] hover:underline">Email: testt@gmail.com</a>
         </div>
       </div>
 
