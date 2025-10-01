@@ -18,7 +18,7 @@ export default function Home() {
         <ScrollMarquee text="UI Design • Prototype • Frontend Design • UX Research • Motion Graphics" />
       </div>
       {/* <SkillSectionFilmstrip /> */}
-      <HorizontalScrollSection sections={3} />
+      <HorizontalScrollSection/>
       <Footer />
 
     </main>
