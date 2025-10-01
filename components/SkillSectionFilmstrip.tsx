@@ -4,33 +4,36 @@ import { useState } from "react";
 import SkillImage from "./SkillImage";
 import SkillAccordionItem from "./SkillAccordionItem";
 
-// Each skill has its own related skills
 const skillsData = [
   {
     skill: "UI/UX Design",
-    related: ["Wireframing", "Prototyping", "Interaction Design"],
+    description: "Making apps & websites feel effortless and fun.",
+    related: ["Design Systems", "Prototyping", "Wireframing", "Figma"],
   },
   {
-    skill: "Frontend Development",
-    related: ["React.js", "Next.js", "Tailwind CSS"],
+    skill: "Front-End Dev",
+    description: "Turning designs into real-life, scrollable magic.",
+    related: ["HTML", "CSS", "Git", "VS Code"],
   },
   {
-    skill: "3D Animation",
-    related: ["Blender", "Cinema 4D", "Maya"],
+    skill: "Video Editing & Videography",
+    description: "Crafting visuals that hit different—smooth cuts, cinematic shots, vibes on point.",
+    related: ["Color Grading", "CapCut", "Filming", "Videography"],
   },
   {
     skill: "Graphic Design",
-    related: ["Photoshop", "Illustrator", "Figma"],
+    description: "Branding that sticks and visuals that slap.",
+    related: ["Photoshop", "Logo & Brand Design"],
   },
   {
-    skill: "Database Management",
-    related: ["MySQL", "MongoDB", "PostgreSQL"],
-  },
-  {
-    skill: "Video Editing",
-    related: ["Premiere Pro", "After Effects", "DaVinci Resolve"],
+    skill: "Photo Editing & Photography",
+    description: "Leveling up visuals with that perfect glow, plus capturing moments that tell a story.",
+    related: ["Lightroom", "Color Grading", "Photography"],
   },
 ];
+
+
+
 
 export default function SkillSectionFilmstrip() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
