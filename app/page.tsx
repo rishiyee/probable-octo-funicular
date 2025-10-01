@@ -5,6 +5,7 @@ import AboutSection from "@/components/AboutSection";
 import WorksSection from "@/components/WorksSection";
 import Work from "@/components/Work";
 import Footer from "@/components/Footer";
+import HorizontalScrollSection from "@/components/HorizontalScrollSection";
 
 export default function Home() {
   return (
@@ -16,7 +17,8 @@ export default function Home() {
       <div className="flex flex-col py-20 items-center justify-center">
         <ScrollMarquee text="UI Design • Prototype • Frontend Design • UX Research • Motion Graphics" />
       </div>
-      <SkillSectionFilmstrip />
+      {/* <SkillSectionFilmstrip /> */}
+      <HorizontalScrollSection sections={3} />
       <Footer />
 
     </main>

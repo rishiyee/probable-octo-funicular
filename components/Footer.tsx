@@ -5,7 +5,7 @@ import HeroFooter from "./HeroFooter";
 
 export default function Footer() {
   return (
-    <footer className="w-full min-h-[50vh] bg-black p-10 md:p-20 flex flex-col justify-start gap-10">
+    <footer className="w-full min-h-[50vh] bg-black p-10 md:p-20 flex flex-col justify-start">
       
       {/* Links Section */}
       <div className="flex w-full justify-between flex-wrap gap-10">
