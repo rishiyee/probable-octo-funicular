@@ -1,32 +1,29 @@
 import Image from "next/image";
-import Navbar from "./Navbar";
 
 export default function Hero() {
   return (
-    <section className="relative h-screen w-full">
-      {/* Navbar */}
-      <Navbar />
+    <section className="relative h-screen w-full p-5"> {/* 20px padding */}
+      {/* Background Wrapper to clip radius */}
+      <div className="relative h-full w-full overflow-hidden rounded-[20px]">
+        
+        {/* Background Image */}
+        <Image
+          src="/hero1.png"
+          alt="Hero Background"
+          fill
+          priority
+          className="object-cover"
+        />
 
-      {/* Background Image */}
-      <Image
-        src="/hero.png"
-        alt="Hero Background"
-        fill
-        priority
-        className="object-cover"
-      />
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/90 z-10"></div>
 
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/90 z-10"></div>
-
-      {/* Text container */}
-      <div className="relative z-20 flex h-full flex-col lg:flex-row justify-end lg:items-end text-left text-white px-4 sm:px-8 md:px-20 gap-0 lg:gap-4 pb-10 md:pb-20">
-        <h1 className="flex-none md:flex-[3] text-6xl sm:text-8xl md:text-[96px] 2xl:text-[126px] font-normal leading-snug sm:leading-normal md:leading-tight">
-          Design beyond<br />Imagination
-        </h1>
-        <p className="flex-none md:flex-[1] text-base sm:text-lg md:text-[20px] lg:text-[24px] leading-snug">
-          Discover amazing products and experiences tailored just for you.
-        </p>
+        {/* Centered Text */}
+        <div className="absolute inset-0 z-20 flex items-center justify-center px-4">
+          <h1 className="text-white text-5xl sm:text-7xl md:text-8xl 2xl:text-[120px] font-normal text-center leading-tight">
+            Think. Design. Build.
+          </h1>
+        </div>
       </div>
     </section>
   );
