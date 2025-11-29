@@ -17,9 +17,9 @@ export default function Home() {
       {/* <AboutSection /> */}
       {/* <Work /> */}
       {/* <WorksSection /> */}
-      {/* <div className="flex flex-col py-20 items-center justify-center">
+      <div className="flex flex-col py-20 items-center justify-center">
         <ScrollMarquee text="UI Design • Prototype • Frontend Design • UX Research • Motion Graphics" />
-      </div> */}
+      </div>
       {/* <SkillSectionFilmstrip /> */}
       {/* <HorizontalScrollSection/> */}
       {/* <Footer /> */}
