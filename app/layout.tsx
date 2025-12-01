@@ -27,6 +27,14 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={hostGrotesk.variable}>
+      <head>
+        {/* Material Symbols Rounded (cleanest Material icons) */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded"
+          rel="stylesheet"
+        />
+      </head>
+
       <body className="host-grotesk bg-background text-foreground">
         {children}
       </body>

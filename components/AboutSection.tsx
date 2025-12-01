@@ -26,13 +26,15 @@ export default function AboutServiceSection() {
 
             {/* Image Left */}
             <div className="w-full md:w-1/2 p-8">
-              <div className="relative w-full aspect-[3/4] rounded-[32px] overflow-hidden">
+              <div className="relative w-full aspect-[4/4]  overflow-hidden">
                 <Image
                   src="/about.jpg"
                   alt="Service"
                   fill
                   className="object-cover"
+                  unoptimized
                 />
+
               </div>
             </div>
 

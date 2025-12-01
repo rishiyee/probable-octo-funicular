@@ -2,7 +2,7 @@
 
 export default function WorksText() {
   return (
-    <div className="w-full h-[50vh] flex justify-center items-center">
+    <div className="w-full flex justify-center items-center">
       <h1
         className="
           font-[Host Grotesk] font-light leading-none text-center
