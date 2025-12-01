@@ -19,14 +19,14 @@ export default function Hero() {
     <section
       className={`
         relative h-screen w-full transition-all duration-500 snap-start
-        ${scrolled ? "p-0" : "p-3"}
+        ${scrolled ? "p-3" : "p-3"}
       `}
     >
       <Navbar />
       <div
         className={`
           relative h-full w-full overflow-hidden transition-all duration-500
-          ${scrolled ? "rounded-none" : "rounded-[20px]"}
+          ${scrolled ? "rounded-[20px]" : "rounded-[20px]"}
         `}
       >
         <Image

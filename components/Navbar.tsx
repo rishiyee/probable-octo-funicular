@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import Button from "./Button";
+import Button from "./button";
 
 export default function Navbar() {
   return (
@@ -34,9 +34,9 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Menu */}
-        <Button className="md:hidden text-white text-2xl">
+        <button className="md:hidden text-white text-2xl">
           ☰
-        </Button>
+        </button>
       </div>
     </nav>
   );
