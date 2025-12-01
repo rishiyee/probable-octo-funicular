@@ -1,6 +1,7 @@
 import Image from "next/image";
+import ShutterImage from "@/components/ShutterImage";
 
-export default function AboutServiceSection() {
+export default function AboutSection() {
   return (
     <section className="w-full sf-pro">
 
@@ -26,16 +27,11 @@ export default function AboutServiceSection() {
 
             {/* Image Left */}
             <div className="w-full md:w-1/2 p-8">
-              <div className="relative w-full aspect-[4/4]  overflow-hidden">
-                <Image
-                  src="/about.jpg"
-                  alt="Service"
-                  fill
-                  className="object-cover"
-                  unoptimized
-                />
-
-              </div>
+              <ShutterImage
+                src="/about.jpg"
+                alt="Service"
+                ratio="1/1"
+              />
             </div>
 
             {/* Text Right */}
