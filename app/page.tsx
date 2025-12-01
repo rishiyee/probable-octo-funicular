@@ -14,7 +14,7 @@ export default function Home() {
 
 
       <Hero />
-      {/* <AboutSection /> */}
+      <AboutSection />
       {/* <Work /> */}
       {/* <WorksSection /> */}
       <div className="flex flex-col py-20 items-center justify-center">
