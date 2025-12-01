@@ -4,7 +4,7 @@ import Button from "./button";
 
 export default function Navbar() {
   return (
-    <nav className="w-full flex justify-center fixed top-10 left-0 z-50 sf-pro">
+    <nav className="w-full flex justify-center fixed top-8 left-0 z-50 sf-pro">
       <div
         className="
           flex w-full max-w-[1248px] px-6 py-3

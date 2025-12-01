@@ -19,7 +19,7 @@ export default function Hero() {
     <section
       className={`
         relative h-screen w-full transition-all duration-500 snap-start
-        ${scrolled ? "p-0" : "p-5"}
+        ${scrolled ? "p-0" : "p-3"}
       `}
     >
       <Navbar />
