@@ -34,9 +34,9 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Menu */}
-        <button className="md:hidden text-white text-2xl">
+        <Button className="md:hidden text-white text-2xl">
           ☰
-        </button>
+        </Button>
       </div>
     </nav>
   );

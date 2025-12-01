@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PointerHover from "@/components/PointerHover";
 
 type WorksContainerProps = {
@@ -12,34 +12,46 @@ type WorksContainerProps = {
   link?: string;
 };
 
-export default function WorksContainer({
-  imageSrc,
-  title,
-  rightContent,
-  link = "#",
-}: WorksContainerProps) {
-  const [targetPos, setTargetPos] = useState({ x: 0, y: 0 });
+// --- custom hook for smooth cursor follow ---
+function useSmoothCursorFollow() {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [hovered, setHovered] = useState(false);
 
-  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const targetRef = useRef({ x: 0, y: 0 });
+  const frameRef = useRef<number | null>(null);
+
+  const setTargetFromEvent = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    setTargetPos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    targetRef.current = { x, y };
+
+    // on first enter, sync cursor to avoid jump
+    if (!hovered) {
+      setCursorPos({ x, y });
+      setHovered(true);
+    }
+  };
+
+  const handleLeave = () => {
+    setHovered(false);
   };
 
   useEffect(() => {
-    if (!hovered) return;
+    if (!hovered) {
+      if (frameRef.current !== null) {
+        cancelAnimationFrame(frameRef.current);
+        frameRef.current = null;
+      }
+      return;
+    }
 
-    let frameId: number;
-    const speed = 0.1;
+    const speed = 0.12; // 0–1 → higher = snappier
 
     const animate = () => {
       setCursorPos((prev) => {
-        const dx = targetPos.x - prev.x;
-        const dy = targetPos.y - prev.y;
+        const dx = targetRef.current.x - prev.x;
+        const dy = targetRef.current.y - prev.y;
 
         return {
           x: prev.x + dx * speed,
@@ -47,29 +59,43 @@ export default function WorksContainer({
         };
       });
 
-      frameId = requestAnimationFrame(animate);
+      frameRef.current = requestAnimationFrame(animate);
     };
 
-    frameId = requestAnimationFrame(animate);
+    frameRef.current = requestAnimationFrame(animate);
 
-    return () => cancelAnimationFrame(frameId);
-  }, [hovered, targetPos.x, targetPos.y]);
+    return () => {
+      if (frameRef.current !== null) {
+        cancelAnimationFrame(frameRef.current);
+      }
+    };
+  }, [hovered]);
 
-  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    setTargetPos({ x, y });
-    setCursorPos({ x, y });
-    setHovered(true);
+  return {
+    cursorPos,
+    hovered,
+    setTargetFromEvent,
+    handleLeave,
   };
+}
 
-  const handleMouseLeave = () => setHovered(false);
+export default function WorksContainer({
+  imageSrc,
+  title,
+  rightContent,
+  link,
+}: WorksContainerProps) {
+  const { cursorPos, hovered, setTargetFromEvent, handleLeave } =
+    useSmoothCursorFollow();
+
+  const Wrapper: React.ElementType = link ? Link : "div";
+  const wrapperProps = link
+    ? { href: link, target: "_blank", rel: "noopener noreferrer", className: "block" }
+    : { className: "block" };
 
   return (
     <div className="w-full flex-grow sf-pro">
-      <Link href={link} target="_blank" className="block">
+      <Wrapper {...wrapperProps}>
         <div
           className="
             relative w-full aspect-[2/1] rounded-[32px] overflow-hidden
@@ -77,9 +103,8 @@ export default function WorksContainer({
             transition-transform duration-300 group-hover:-translate-y-2
             shadow-lg shadow-black/0 group-hover:shadow-black/20
           "
-          onMouseMove={handleMove}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
+          onMouseMove={setTargetFromEvent}
+          onMouseLeave={handleLeave}
         >
           {/* Thumbnail Image */}
           <Image
@@ -121,7 +146,7 @@ export default function WorksContainer({
             </div>
           )}
         </div>
-      </Link>
+      </Wrapper>
 
       {/* Title + Pills */}
       <div className="flex items-center justify-between py-5">

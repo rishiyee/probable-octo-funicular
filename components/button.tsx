@@ -1,27 +1,20 @@
-"use client";
+import React from "react";
 
-interface ButtonProps {
-  children: React.ReactNode;
-  onClick?: () => void;
-  className?: string;
-}
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-export default function Button({ children, onClick, className }: ButtonProps) {
+export default function Button({ className = "", children, ...props }: ButtonProps) {
   return (
     <button
-      onClick={onClick}
       className={`
-        flex items-center justify-center
-        px-[18px] py-[14px]
-        gap-[4px]
-        rounded-full
-        bg-[#FC5F2B]
-        text-white text-[14px] font-medium
-        sf-pro
-        transition-all duration-200
-        hover:opacity-90 active:scale-[0.98]
-        ${className || ""}
+        inline-flex items-center justify-center
+        px-4 py-2 rounded-full
+        text-sm font-medium
+        bg-red-500 text-white
+        hover:bg-neutral-100 hover:text-black
+        transition
+        ${className}
       `}
+      {...props}
     >
       {children}
     </button>

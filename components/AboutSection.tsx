@@ -41,10 +41,8 @@ export default function AboutServiceSection() {
             {/* Text Right */}
             <div className="w-full md:w-1/2 p-8 border-l border-[#4D4D4D] text-white flex">
               <h2 className="text-[20px] font-normal leading-snug">
-                Addressing the climate emergency with urgency and intensity, we
-                invest in innovation and design to deliver exceptional
-                residential and commercial projects with lasting industry-wide
-                impact.
+                I’m Hrishikesh, a 22-year-old UI/UX designer from Kerala with 1.6+ years of experience.
+                I craft digital experiences that are simple, intentional, and actually feel good to use.
               </h2>
             </div>
 
