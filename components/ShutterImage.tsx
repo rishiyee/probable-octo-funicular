@@ -23,7 +23,7 @@ export default function ShutterImage({
   ratio = "4/4",
 }: ShutterImageProps) {
   const ref = useRef<HTMLDivElement | null>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
@@ -32,43 +32,36 @@ export default function ShutterImage({
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(el);
+          setRevealed(true);
+          observer.unobserve(el); // play once
         }
       },
-      { threshold: 0.3 }
+      {
+        // Reveal only when section REALLY enters viewport
+        threshold: 0.65, 
+      }
     );
 
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
+  const clipPath = revealed
+    ? `inset(0% 0% 0% 0%)`
+    : `inset(100% 0% 0% 0%)`;
+
   const ratioClass = ratioClassMap[ratio] ?? ratioClassMap["4/4"];
 
   return (
-    <div
-      ref={ref}
-      className={`relative w-full overflow-hidden ${ratioClass}`}
-    >
-      {/* Curtain reveal wrapper */}
+    <div ref={ref} className={`relative w-full overflow-hidden ${ratioClass}`}>
       <div
-        className={`
-          absolute inset-0 overflow-hidden
-          transition-[max-height] duration-700 ease-out
-        `}
+        className="absolute inset-0 overflow-hidden will-change-[clip-path]"
         style={{
-          maxHeight: isVisible ? "100%" : "0%",
+          clipPath,
+          transition: `clip-path 1200ms cubic-bezier(.25,.46,.45,.94)`,
         }}
       >
-        <div className="w-full h-full">
-          <Image
-            src={src}
-            alt={alt}
-            fill
-            className="object-cover"
-            unoptimized
-          />
-        </div>
+        <Image src={src} alt={alt} fill className="object-cover" unoptimized />
       </div>
     </div>
   );
