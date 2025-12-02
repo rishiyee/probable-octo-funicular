@@ -1,5 +1,6 @@
 import Image from "next/image";
 import ShutterImage from "@/components/ShutterImage";
+import WordFade from "@/components/WordFade";
 
 export default function AboutSection() {
   return (
@@ -10,9 +11,13 @@ export default function AboutSection() {
         <div className="max-w-[1440px] mx-auto text-white">
           <div className="w-[35%] min-w-[300px]">
             <h2 className="text-[32px] font-normal leading-snug">
-              Crafting digital experiences with clarity, purpose, and intention.
-              From concept to final interaction, I design products that feel
-              effortless, thoughtful, and beautifully simple.
+              <WordFade
+                text="Crafting digital experiences with clarity, purpose, and intention. From concept to final interaction, I design products that feel effortless, thoughtful, and beautifully simple."
+                baseOpacity={0.5}
+                visibleOpacity={1}
+                delay={45}
+                duration={350}
+              />
             </h2>
           </div>
         </div>
@@ -27,18 +32,19 @@ export default function AboutSection() {
 
             {/* Image Left */}
             <div className="w-full md:w-1/2 p-8">
-              <ShutterImage
-                src="/about.jpg"
-                alt="Service"
-                ratio="1/1"
-              />
+              <ShutterImage src="/about.jpg" alt="Service" ratio="1/1" />
             </div>
 
             {/* Text Right */}
             <div className="w-full md:w-1/2 p-8 border-l border-[#4D4D4D] text-white flex">
               <h2 className="text-[20px] font-normal leading-snug">
-                I’m Hrishikesh, a 22-year-old UI/UX designer from Kerala with 1.6+ years of experience.
-                I craft digital experiences that are simple, intentional, and actually feel good to use.
+                <WordFade
+                  text="I’m Hrishikesh, a 22-year-old UI/UX designer from Kerala with 1.6+ years of experience. I craft digital experiences that are simple, intentional, and actually feel good to use."
+                  baseOpacity={0.5}
+                  visibleOpacity={1}
+                  delay={40}
+                  duration={300}
+                />
               </h2>
             </div>
 

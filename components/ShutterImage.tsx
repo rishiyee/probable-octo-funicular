@@ -33,12 +33,11 @@ export default function ShutterImage({
       ([entry]) => {
         if (entry.isIntersecting) {
           setRevealed(true);
-          observer.unobserve(el); // play once
+          observer.unobserve(el); 
         }
       },
       {
-        // Reveal only when section REALLY enters viewport
-        threshold: 0.65, 
+        threshold: 0.15,
       }
     );
 
@@ -58,7 +57,7 @@ export default function ShutterImage({
         className="absolute inset-0 overflow-hidden will-change-[clip-path]"
         style={{
           clipPath,
-          transition: `clip-path 1200ms cubic-bezier(.25,.46,.45,.94)`,
+          transition: `clip-path 300ms cubic-bezier(.25,.46,.45,.94)`,
         }}
       >
         <Image src={src} alt={alt} fill className="object-cover" unoptimized />

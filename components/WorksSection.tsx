@@ -23,7 +23,7 @@ export default function WorksSection() {
                 {/* Add more works like this */}
 
                 <WorksContainer
-                    imageSrc="/project2.jpg"
+                    imageSrc="/mockup2.jpg"
                     title="Fintech Dashboard"
                     link="https://dribbble.com/shots/1234567"
 

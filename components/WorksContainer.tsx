@@ -5,14 +5,6 @@ import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
 import PointerHover from "@/components/PointerHover";
 
-type WorksContainerProps = {
-  imageSrc: string;
-  title: string;
-  rightContent?: React.ReactNode;
-  link?: string;
-};
-
-// --- custom hook for smooth cursor follow ---
 function useSmoothCursorFollow() {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [hovered, setHovered] = useState(false);
@@ -26,16 +18,13 @@ function useSmoothCursorFollow() {
     const y = e.clientY - rect.top;
     targetRef.current = { x, y };
 
-    // on first enter, sync cursor to avoid jump
     if (!hovered) {
       setCursorPos({ x, y });
       setHovered(true);
     }
   };
 
-  const handleLeave = () => {
-    setHovered(false);
-  };
+  const handleLeave = () => setHovered(false);
 
   useEffect(() => {
     if (!hovered) {
@@ -46,7 +35,7 @@ function useSmoothCursorFollow() {
       return;
     }
 
-    const speed = 0.12; // 0–1 → higher = snappier
+    const speed = 0.12;
 
     const animate = () => {
       setCursorPos((prev) => {
@@ -71,24 +60,14 @@ function useSmoothCursorFollow() {
     };
   }, [hovered]);
 
-  return {
-    cursorPos,
-    hovered,
-    setTargetFromEvent,
-    handleLeave,
-  };
+  return { cursorPos, hovered, setTargetFromEvent, handleLeave };
 }
 
-export default function WorksContainer({
-  imageSrc,
-  title,
-  rightContent,
-  link,
-}: WorksContainerProps) {
+export default function WorksContainer({ imageSrc, title, rightContent, link }: any) {
   const { cursorPos, hovered, setTargetFromEvent, handleLeave } =
     useSmoothCursorFollow();
 
-  const Wrapper: React.ElementType = link ? Link : "div";
+  const Wrapper: any = link ? Link : "div";
   const wrapperProps = link
     ? { href: link, target: "_blank", rel: "noopener noreferrer", className: "block" }
     : { className: "block" };
@@ -106,7 +85,7 @@ export default function WorksContainer({
           onMouseMove={setTargetFromEvent}
           onMouseLeave={handleLeave}
         >
-          {/* Thumbnail Image */}
+          {/* UPDATED: Removed blur */}
           <Image
             src={imageSrc}
             alt={title}
@@ -115,11 +94,10 @@ export default function WorksContainer({
               object-cover
               transition-all duration-700 ease-out
               group-hover:scale-110
-              group-hover:blur-[2px]
             "
           />
 
-          {/* Subtle Gradient Overlay (premium look) */}
+          {/* Overlay */}
           <div
             className="
               absolute inset-0
@@ -129,13 +107,10 @@ export default function WorksContainer({
             "
           />
 
-          {/* Floating pointer following cursor */}
+          {/* Floating pointer */}
           {hovered && (
             <div
-              className="
-                absolute pointer-events-none
-                transition-transform duration-100 ease-out
-              "
+              className="absolute pointer-events-none transition-transform duration-100 ease-out"
               style={{
                 left: cursorPos.x,
                 top: cursorPos.y,
