@@ -12,7 +12,7 @@ export default function Navbar() {
     <nav className="w-full flex justify-center fixed top-6 left-0 z-50 font-[var(--font-sf-pro)] tracking-normal">
       <div
         className="
-          flex w-full max-w-[1440px] px-4 sm:px-6 py-3
+          flex w-full max-w-[1300px] px-4 sm:px-6 py-3
           justify-between items-center
           rounded-full bg-[rgba(0,0,0,0.08)]
           backdrop-blur-[50px]
