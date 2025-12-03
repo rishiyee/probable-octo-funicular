@@ -2,6 +2,7 @@ import Hero from "@/components/Hero";
 import AboutSection from "@/components/AboutSection";
 import WorksSection from "@/components/WorksSection";
 import ScrollMarquee from "@/components/ScrollMarquee";
+import SkillsSection from "@/components/SkillsSection";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       <AboutSection />
       <WorksSection />
       <ScrollMarquee />
+      <SkillsSection />
     </main>
   );
 }
