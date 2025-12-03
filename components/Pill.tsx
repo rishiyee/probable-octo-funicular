@@ -1,25 +1,43 @@
 type PillProps = {
   children: React.ReactNode;
-  variant?: "default" | "filled" | "glass";
+  variant?: "default" | "filled" | "glass" | "outlineDark";
+  size?: "sm" | "md" | "lg";
 };
 
-export default function Pill({ children, variant = "default" }: PillProps) {
+export default function Pill({
+  children,
+  variant = "default",
+  size = "md",
+}: PillProps) {
   const baseStyles = `
     inline-flex
-    px-3
-    py-1.5
     justify-center
     items-center
-    gap-1
-    rounded-full
-    text-[20px]
+    gap-[4px]
+    rounded-[84px]
     font-[510]
-    leading-none
-    tracking-[-0.32px]
     sf-pro
     transition-all
     duration-200
   `;
+
+  const sizeStyles = {
+    sm: `
+      px-3 py-1
+      text-[12px]
+      tracking-[-0.24px]
+    `,
+    md: `
+      px-[12px] py-[6px]
+      text-[14px]
+      tracking-[-0.28px]
+    `,
+    lg: `
+      px-5 py-2
+      text-[20px]
+      tracking-[-0.32px]
+    `,
+  };
 
   const variants = {
     default: `
@@ -40,7 +58,15 @@ export default function Pill({ children, variant = "default" }: PillProps) {
       bg-white/10
       hover:bg-white/20
     `,
+    outlineDark: `
+      border border-[#4D4D4D]
+      text-[#878787]
+    `,
   };
 
-  return <div className={`${baseStyles} ${variants[variant]}`}>{children}</div>;
+  return (
+    <div className={`${baseStyles} ${sizeStyles[size]} ${variants[variant]}`}>
+      {children}
+    </div>
+  );
 }

@@ -21,7 +21,7 @@ export default function WorksSection() {
         />
 
         <WorksContainer
-          imageSrc="/mockup2.jpg"
+          imageSrc="/project5.jpg"
           title="Fintech Dashboard"
           link="https://dribbble.com/shots/1234567"
           rightContent={

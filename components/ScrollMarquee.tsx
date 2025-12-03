@@ -3,9 +3,9 @@ import { useEffect, useRef, useState } from "react";
 
 type Props = {
   text?: string;
-  baseSpeed?: number; // positive number (we'll force negative internally)
+  baseSpeed?: number; // positive number (we'll bias left by default)
   multiplier?: number;
-  hoverSpeed?: number; // positive (we'll force negative)
+  hoverSpeed?: number; // positive (slows down toward hover)
   maxIncomingDelta?: number;
   maxTargetVelocity?: number;
   entryDamping?: number;
@@ -14,12 +14,12 @@ type Props = {
 
 export default function ScrollMarquee({
   text = "Product Strategy • Interface Design • Motion Systems • Brand Identity • Digital Experiences • ",
-  baseSpeed = 3.0,
+  baseSpeed = 1.5,
   multiplier = 0.4,
-  hoverSpeed = 0.5,
+  hoverSpeed = 0.6,
   maxIncomingDelta = 60,
-  maxTargetVelocity = 25,
-  entryDamping = 0.2,
+  maxTargetVelocity = 30,
+  entryDamping = 0.25,
   repeatMultiplier = 16,
 }: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -39,7 +39,7 @@ export default function ScrollMarquee({
 
   const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
 
-  // Force direction to left by using negative magnitudes
+  // base is leftward default (negative). But wheel/drag can push both ways.
   const base = -Math.abs(baseSpeed);
   const hover = -Math.abs(hoverSpeed);
 
@@ -86,8 +86,12 @@ export default function ScrollMarquee({
     const onWheel = (e: WheelEvent) => {
       if (!isInView.current) return;
       const raw = clamp(e.deltaY, -maxIncomingDelta, maxIncomingDelta);
-      // multiply and push into target (positive raw -> more leftward if negative base)
-      targetVelocity.current += raw * multiplier * 0.03;
+      // raw positive usually means scrolling down; we'll use it to adjust targetVelocity
+      // scale so wheel gestures feel natural; positive raw -> push more left (negative) if you'd like,
+      // but we allow both directions: user can scroll up (negative deltaY) to push right.
+      // Here we'll invert raw for a more intuitive horizontal feel (scroll down -> move left).
+      const horDelta = -raw * multiplier * 0.04;
+      targetVelocity.current += horDelta;
       targetVelocity.current = clamp(targetVelocity.current, -maxTargetVelocity, maxTargetVelocity);
     };
 
@@ -102,8 +106,9 @@ export default function ScrollMarquee({
       const currentX = "touches" in e && (e as TouchEvent).touches ? (e as TouchEvent).touches[0].clientX : (e as MouseEvent).clientX;
       const delta = currentX - lastX.current;
       if (isInView.current) {
-        // dragging right (positive delta) should make it slower to the left (less negative target) and vice-versa
-        targetVelocity.current += delta * multiplier * 0.15;
+        // dragging right (positive delta) should push positive target (→ move right),
+        // dragging left (negative delta) pushes negative target (→ move left).
+        targetVelocity.current += delta * multiplier * 0.18;
         targetVelocity.current = clamp(targetVelocity.current, -maxTargetVelocity, maxTargetVelocity);
       }
       lastX.current = currentX;
@@ -124,37 +129,36 @@ export default function ScrollMarquee({
     // Animation loop
     let raf = 0;
     const animate = () => {
-      // approach target velocity
+      // smooth towards targetVelocity
       velocity.current += (targetVelocity.current - velocity.current) * 0.12;
 
-      // ensure base/hover goals are negative (left)
+      // base/hover goals bias towards left by default:
       if (isHovered.current) {
+        // when hovered, move toward "hover" speed (less negative or more negative depending)
         targetVelocity.current += (hover - targetVelocity.current) * 0.05;
       } else {
         targetVelocity.current += (base - targetVelocity.current) * 0.02;
       }
 
-      // prevent direction flip: always keep negative (left)
-      velocity.current = -Math.abs(velocity.current || 0);
-      targetVelocity.current = -Math.abs(targetVelocity.current || 0);
-
-      // apply position
+      // apply position (velocity may be positive or negative now)
       position.current += velocity.current;
 
       // wrap by width
       if (width > 0) {
+        // wrap while keeping continuity
         if (position.current < -width) position.current += width;
         if (position.current > width) position.current -= width;
       }
 
       // set transform
       if (marqueeRef.current) {
-        marqueeRef.current.style.transform = `translateX(${position.current}px)`;
-        marqueeRef.current.style.textShadow = isHovered.current ? "0 0 20px rgba(255,255,255,0.3)" : "none";
+        // use translate3d for smoother GPU rendering
+        marqueeRef.current.style.transform = `translate3d(${position.current}px, 0, 0)`;
+        marqueeRef.current.style.textShadow = isHovered.current ? "0 0 20px rgba(255,255,255,0.25)" : "none";
       }
 
       // mild decay so it eases back to base
-      targetVelocity.current *= 0.94;
+      targetVelocity.current *= 0.95;
 
       raf = requestAnimationFrame(animate);
     };
@@ -193,7 +197,7 @@ export default function ScrollMarquee({
       <div
         ref={marqueeRef}
         className="flex will-change-transform whitespace-nowrap cursor-grab active:cursor-grabbing text-3xl sm:text-5xl px-8 md:text-7xl lg:text-8xl font-normal tracking-tight transition-transform duration-300 ease-out"
-        style={{ transform: `translateX(${position.current}px)` }}
+        style={{ transform: `translate3d(${position.current}px,0,0)` }}
       >
         <div ref={contentRef} className="flex">
           {repeated}
