@@ -99,7 +99,7 @@ export default function SkillStrip({
   }, []);
 
   return (
-    <div ref={containerRef} className="flex flex-col w-full py-8">
+    <div ref={containerRef} className="flex flex-col w-full">
       {/* TOP ROW */}
       <div className="flex items-center gap-16 py-8">
         <span className="sf-pro text-[64px] font-[400] leading-[110%] text-[#FC3C00]">

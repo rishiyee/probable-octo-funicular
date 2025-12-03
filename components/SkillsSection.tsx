@@ -7,12 +7,12 @@ const SKILLS = [
     pills: ["Wireframing", "Prototyping", "User Flows", "Interaction Design"],
   },
   {
-    index: "03",
+    index: "02",
     label: "Graphic Design",
     pills: ["Brand Assets", "Social Media", "Posters", "Illustration"],
   },
   {
-    index: "04",
+    index: "03",
     label: "Photography & Editing",
     pills: ["Portraits", "Retouching", "Color Correction", "Composition"],
   },
