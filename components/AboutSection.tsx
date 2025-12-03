@@ -4,7 +4,7 @@ import WordFade from "@/components/WordFade";
 
 export default function AboutSection() {
   return (
-    <section className="w-full sf-pro">
+    <section id="about" className="w-full sf-pro">
 
       {/* ---------------- ABOUT SECTION ---------------- */}
       <div className="w-full px-6 py-24 md:py-32 border-b border-[#4D4D4D]">

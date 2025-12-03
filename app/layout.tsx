@@ -1,43 +1,51 @@
-import './globals.css'
-import type { Metadata } from 'next'
-import localFont from 'next/font/local'
+import "./globals.css";
+import type { Metadata } from "next";
+import localFont from "next/font/local";
+import SmoothScroll from "@/components/SmoothScroll"; // client component (OK)
 
-// Add Host Grotesk font
-const hostGrotesk = localFont({
+// SF PRO (global)
+const sfPro = localFont({
   src: [
-    { path: '../public/fonts/HostGrotesk-Regular.ttf', weight: '400', style: 'normal' },
-    { path: '../public/fonts/HostGrotesk-Medium.ttf', weight: '500', style: 'normal' },
-    { path: '../public/fonts/HostGrotesk-SemiBold.ttf', weight: '600', style: 'normal' },
-    { path: '../public/fonts/HostGrotesk-Bold.ttf', weight: '700', style: 'normal' },
+    { path: "../public/fonts/SF-Pro-Display-Regular.otf", weight: "400", style: "normal" },
+    { path: "../public/fonts/SF-Pro-Display-Medium.otf", weight: "500", style: "normal" },
+    { path: "../public/fonts/SF-Pro-Display-Semibold.otf", weight: "600", style: "normal" },
+    { path: "../public/fonts/SF-Pro-Display-Bold.otf", weight: "700", style: "normal" },
   ],
-  variable: '--font-host-grotesk',
-  display: 'swap',
-})
+  variable: "--font-sf-pro",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  title: 'rishiyee',
-  description: 'Minimal starter with Tailwind and Host Grotesk font',
+  title: "rishiyee | portfolio",
+  description: "Portfolio",
   icons: {
-    icon: '/faviconfff.svg',
-    shortcut: '/faviconfff.svg',
-    apple: '/faviconfff.svg',
+    icon: "/faviconfff.svg",
+    shortcut: "/faviconfff.svg",
+    apple: "/faviconfff.svg",
   },
-}
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={hostGrotesk.variable}>
+    <html lang="en" className={sfPro.variable}>
       <head>
-        {/* Material Symbols Rounded (cleanest Material icons) */}
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded"
           rel="stylesheet"
         />
       </head>
 
-      <body className="host-grotesk bg-background text-foreground">
-        {children}
+      <body className="font-[var(--font-sf-pro)] bg-background text-foreground">
+        {/* Client-side GSAP component */}
+        <SmoothScroll />
+
+        {/* Required wrappers for ScrollSmoother */}
+        <div id="smooth-wrapper">
+          <div id="smooth-content">
+            {children}
+          </div>
+        </div>
       </body>
     </html>
-  )
+  );
 }

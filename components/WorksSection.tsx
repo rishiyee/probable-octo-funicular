@@ -4,11 +4,10 @@ import Work from "./Work";
 
 export default function WorksSection() {
   return (
-    <section className="w-full py-16 gap-16">
+    <section id="works" className="w-full py-16 gap-16">
       <Work />
 
       <div className="max-w-[1440px] w-full mx-auto px-4 flex flex-col gap-16">
-
         <WorksContainer
           imageSrc="/project1.jpg"
           title="E-Commerce Website"
@@ -21,8 +20,6 @@ export default function WorksSection() {
           }
         />
 
-        {/* Add more works like this */}
-
         <WorksContainer
           imageSrc="/mockup2.jpg"
           title="Fintech Dashboard"
@@ -34,7 +31,6 @@ export default function WorksSection() {
             </>
           }
         />
-
       </div>
     </section>
   );
