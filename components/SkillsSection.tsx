@@ -1,4 +1,7 @@
+"use client";
+
 import SkillStrip from "./SkillStrip";
+import WordFade from "./WordFade"; // 👈 missing import
 
 const SKILLS = [
   {
@@ -24,13 +27,23 @@ export default function SkillsSection() {
       <div className="w-full max-w-[1440px] mx-auto px-4 flex flex-col gap-24">
 
         {/* Heading */}
-        <h2
+        <WordFade
+          as="h2"
           id="skills-heading"
-          className="sf-pro w-full lg:w-[48.61%] text-[40px] sm:text-[48px] lg:text-[64px] font-[400] leading-[110%] text-[#878787]"
-        >
-          We craft bold digital experiences — from UI/UX and websites to motion,
-          photography, and refined post-production.
-        </h2>
+          text="We craft bold digital experiences — from UI/UX and websites to motion, photography, and refined post-production."
+          baseOpacity={0.5}
+          visibleOpacity={1}
+          delay={45}
+          duration={350}
+          className="
+            sf-pro
+            w-full lg:w-[48.61%]
+            text-[40px] sm:text-[48px] lg:text-[64px]
+            font-[400]
+            leading-[110%]
+            text-[#878787]
+          "
+        />
 
         {/* Skill Strips */}
         <div

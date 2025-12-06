@@ -3,6 +3,7 @@ import AboutSection from "@/components/AboutSection";
 import WorksSection from "@/components/WorksSection";
 import ScrollMarquee from "@/components/ScrollMarquee";
 import SkillsSection from "@/components/SkillsSection";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       <WorksSection />
       <ScrollMarquee />
       <SkillsSection />
+      <Footer />
     </main>
   );
 }
