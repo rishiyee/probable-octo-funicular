@@ -2,51 +2,43 @@
 
 import { useEffect, useState } from "react";
 
-export default function Preloader({ duration = 5000 }) {   // ← slower counting
-  const [progress, setProgress] = useState(0);
+export default function Preloader({ duration = 5000 }) {
   const [done, setDone] = useState(false);
 
   useEffect(() => {
-    const start = Date.now();
+    const timer = setTimeout(() => {
+      setDone(true);
+    }, duration);
 
-    const interval = setInterval(() => {
-      const elapsed = Date.now() - start;
-      const percent = Math.min((elapsed / duration) * 100, 100);
-
-      setProgress(Math.floor(percent));
-
-      if (percent >= 100) {
-        clearInterval(interval);
-        setTimeout(() => setDone(true), 600); // fade delay
-      }
-    }, 60); // ← slower counting loop
-
-    return () => clearInterval(interval);
+    return () => clearTimeout(timer);
   }, [duration]);
 
   return (
     <div
-      className={`fixed inset-0 bg-black z-[9999] flex items-end transition-all duration-\\[5000ms\\] ease-\\[cubic-bezier\\(0.33\\,1\\,0.68\\,1\\)\\] ${
-        done
-          ? "opacity-0 -translate-y-full scale-105"
-          : "opacity-100 translate-y-0 scale-100"
-      }`}
-      style={{
-        boxShadow: done
-          ? "0 -50px 80px rgba(0,0,0,0)"
-          : "0 -50px 80px rgba(0,0,0,0.8)",
-      }}
+      className={`
+        fixed inset-0 bg-black z-[9999] flex items-center justify-center
+        transition-opacity duration-700 ease-out
+        ${done ? "opacity-0 pointer-events-none" : "opacity-100"}
+      `}
     >
       <p
-        className="text-white/20 font-medium mb-8 ml-8"
+        className="text-white/70 font-regular"
         style={{
-          fontSize: "500px",
-          transition: "opacity 1.9s ease",
-          opacity: done ? 0 : 1,
+          fontSize: "24px",
+          letterSpacing: "1px",
+          animation: "fadePulse 1.6s ease-in-out infinite",
         }}
       >
-        {progress}%
+        creating aesthetics
       </p>
+
+      <style jsx>{`
+        @keyframes fadePulse {
+          0% { opacity: 0.4; }
+          50% { opacity: 1; }
+          100% { opacity: 0.4; }
+        }
+      `}</style>
     </div>
   );
 }
