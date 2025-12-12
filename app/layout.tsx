@@ -1,7 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import SmoothScroll from "@/components/SmoothScroll"; // client component (OK)
+import SmoothScroll from "@/components/SmoothScroll";
+import Preloader from "@/components/Preloader"; // 👈 added
 
 // SF PRO (global)
 const sfPro = localFont({
@@ -36,7 +37,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
 
       <body className="font-[var(--font-sf-pro)] bg-background text-foreground">
-        {/* Client-side GSAP component */}
+        <Preloader />
+
         <SmoothScroll />
 
         {/* Required wrappers for ScrollSmoother */}

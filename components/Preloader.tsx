@@ -1,47 +1,52 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
 
-export default function Preloader() {
-  const [loading, setLoading] = useState(true);
+import { useEffect, useState } from "react";
 
-  const overlayRef = useRef<HTMLDivElement | null>(null);
-  const textRef = useRef<HTMLDivElement | null>(null);
+export default function Preloader({ duration = 5000 }) {   // ← slower counting
+  const [progress, setProgress] = useState(0);
+  const [done, setDone] = useState(false);
 
   useEffect(() => {
-    const overlay = overlayRef.current;
-    const text = textRef.current;
-    if (!overlay || !text) return;
+    const start = Date.now();
 
-    const tl = gsap.timeline({
-      defaults: { ease: "power2.out" },
-      onComplete: () => setLoading(false),
-    });
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - start;
+      const percent = Math.min((elapsed / duration) * 100, 100);
 
-    // No initial animations. Just fade out everything.
-    tl.to([text, overlay], {
-      duration: 2.2,
-      autoAlpha: 0,
-      ease: "power2.inOut",
-      delay: 1.2, // how long it stays before fade-out
-    });
+      setProgress(Math.floor(percent));
 
-  }, []);
+      if (percent >= 100) {
+        clearInterval(interval);
+        setTimeout(() => setDone(true), 600); // fade delay
+      }
+    }, 60); // ← slower counting loop
 
-  if (!loading) return null;
+    return () => clearInterval(interval);
+  }, [duration]);
 
   return (
     <div
-      ref={overlayRef}
-      className="fixed inset-0 z-[9999] bg-black flex items-center justify-center"
+      className={`fixed inset-0 bg-black z-[9999] flex items-end transition-all duration-\\[5000ms\\] ease-\\[cubic-bezier\\(0.33\\,1\\,0.68\\,1\\)\\] ${
+        done
+          ? "opacity-0 -translate-y-full scale-105"
+          : "opacity-100 translate-y-0 scale-100"
+      }`}
+      style={{
+        boxShadow: done
+          ? "0 -50px 80px rgba(0,0,0,0)"
+          : "0 -50px 80px rgba(0,0,0,0.8)",
+      }}
     >
-      <div
-        ref={textRef}
-        className="text-white text-xl sf-pro tracking-tight"
+      <p
+        className="text-white/20 font-medium mb-8 ml-8"
+        style={{
+          fontSize: "500px",
+          transition: "opacity 1.9s ease",
+          opacity: done ? 0 : 1,
+        }}
       >
-        © rishiye 2025
-      </div>
+        {progress}%
+      </p>
     </div>
   );
 }
-    
