@@ -2,7 +2,9 @@ import "./globals.css";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import SmoothScroll from "@/components/SmoothScroll";
-import Preloader from "@/components/Preloader"; // 👈 added
+import Preloader from "@/components/Preloader";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 // SF PRO (global)
 const sfPro = localFont({
@@ -37,14 +39,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
 
       <body className="font-[var(--font-sf-pro)] bg-background text-foreground">
-        <Preloader />
+        {/* <Preloader /> */}
 
         <SmoothScroll />
 
-        {/* Required wrappers for ScrollSmoother */}
         <div id="smooth-wrapper">
           <div id="smooth-content">
+
+            <Navbar />
             {children}
+            <Footer />
           </div>
         </div>
       </body>

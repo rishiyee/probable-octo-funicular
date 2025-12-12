@@ -17,14 +17,12 @@ const Footer = () => {
         {/* Right side – Links */}
         <nav className="flex-1 flex flex-col">
           <FooterLink>About</FooterLink>
-          <FooterLink>Experts</FooterLink>
-          <FooterLink>Experience</FooterLink>
-          <FooterLink>Career</FooterLink>
-          <FooterLink>News</FooterLink>
           <FooterLink>Contact </FooterLink>
-<FooterLink onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
-  Back to Top
-</FooterLink>
+          <FooterLink>Works </FooterLink>
+          <FooterLink>Education </FooterLink>
+          <FooterLink onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+            Back to Top
+          </FooterLink>
 
           {/* Bottom legal links */}
           <div className="mt-8 flex gap-6 text-xs text-white/60">

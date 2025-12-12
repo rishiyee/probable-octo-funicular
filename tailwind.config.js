@@ -26,3 +26,25 @@ module.exports = {
   },
   plugins: [require('tailwindcss-animate')],
 }
+
+
+module.exports = {
+  content: [
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+      keyframes: {
+        shine: {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
+        },
+      },
+      animation: {
+        shine: "shine 3s linear infinite",
+      },
+    },
+  },
+  plugins: [],
+};

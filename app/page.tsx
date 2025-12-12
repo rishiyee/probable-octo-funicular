@@ -13,7 +13,6 @@ export default function Home() {
       <WorksSection />
       <ScrollMarquee />
       <SkillsSection />
-      <Footer />
     </main>
   );
 }

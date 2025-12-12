@@ -7,7 +7,6 @@ export default function Hero() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // If user scrolls just a little → expand hero + lock scroll
       setScrolled(window.scrollY > 10);
     };
 
@@ -22,7 +21,6 @@ export default function Hero() {
         ${scrolled ? "p-3" : "p-3"}
       `}
     >
-      <Navbar />
       <div
         className={`
           relative h-full w-full overflow-hidden transition-all duration-500
