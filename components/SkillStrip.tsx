@@ -14,15 +14,12 @@ export default function SkillStrip({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const barRef = useRef<HTMLDivElement | null>(null);
 
-  // explicitly typed numeric refs so TS won't complain
-  const targetRef = useRef<number>(0);   // target progress (0..1)
-  const progressRef = useRef<number>(0); // eased progress (0..1)
+  const targetRef = useRef<number>(0);
+  const progressRef = useRef<number>(0);
 
-  // only respond when visible
   const inViewRef = useRef<boolean>(false);
   const lastTouchY = useRef<number | null>(null);
 
-  // TUNABLE
   const SENSITIVITY = 0.0009;
   const EASE = 0.14;
 
@@ -43,7 +40,6 @@ export default function SkillStrip({
 
     const onWheel = (e: WheelEvent) => {
       if (!inViewRef.current) return;
-      // positive deltaY (scroll down) increases progress
       const delta = e.deltaY * SENSITIVITY;
       targetRef.current = clamp01(targetRef.current + delta);
     };
@@ -53,12 +49,12 @@ export default function SkillStrip({
       lastTouchY.current = e.touches?.[0]?.clientY ?? null;
     };
     const onTouchMove = (e: TouchEvent) => {
-      if (!inViewRef.current) return;
-      if (lastTouchY.current == null) return;
+      if (!inViewRef.current || lastTouchY.current == null) return;
       const y = e.touches?.[0]?.clientY ?? 0;
-      const dy = lastTouchY.current - y; // positive when swiping up
-      const change = dy * (SENSITIVITY * 1.1);
-      targetRef.current = clamp01(targetRef.current + change);
+      const dy = lastTouchY.current - y;
+      targetRef.current = clamp01(
+        targetRef.current + dy * (SENSITIVITY * 1.1)
+      );
       lastTouchY.current = y;
     };
     const onTouchEnd = () => {
@@ -70,17 +66,18 @@ export default function SkillStrip({
     window.addEventListener("touchmove", onTouchMove, { passive: true });
     window.addEventListener("touchend", onTouchEnd, { passive: true });
 
-    // RAF loop
     let raf = 0;
     const loop = () => {
-      // progress eases toward target
-      progressRef.current += (targetRef.current - progressRef.current) * EASE;
+      progressRef.current +=
+        (targetRef.current - progressRef.current) * EASE;
 
-      // paint
       if (barRef.current) {
-        barRef.current.style.width = `${(progressRef.current * 100).toFixed(2)}%`;
-        const op = 0.12 + 0.88 * clamp01(progressRef.current);
-        barRef.current.style.opacity = op.toString();
+        barRef.current.style.width = `${(
+          progressRef.current * 100
+        ).toFixed(2)}%`;
+        barRef.current.style.opacity = (
+          0.12 + 0.88 * clamp01(progressRef.current)
+        ).toString();
       }
 
       raf = requestAnimationFrame(loop);
@@ -95,18 +92,17 @@ export default function SkillStrip({
       window.removeEventListener("touchend", onTouchEnd);
       cancelAnimationFrame(raf);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div ref={containerRef} className="flex flex-col w-full">
       {/* TOP ROW */}
-      <div className="flex items-center gap-16 py-8">
-        <span className="sf-pro text-[64px] font-[400] leading-[110%] text-[#FC3C00]">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-16 py-6 sm:py-8">
+        <span className="sf-pro text-[40px] sm:text-[48px] lg:text-[64px] font-[400] leading-[110%] text-[#FC3C00]">
           {index}
         </span>
 
-        <span className="sf-pro text-[64px] font-[400] leading-[110%] text-[#878787]">
+        <span className="sf-pro text-[40px] sm:text-[48px] lg:text-[64px] font-[400] leading-[110%] text-[#878787]">
           {label}
         </span>
       </div>
@@ -126,14 +122,12 @@ export default function SkillStrip({
       </div>
 
       {/* PILLS */}
-      <div className="pl-[calc(64px+16px+16px+32px)] flex items-center gap-4 py-6">
-        <div className="flex items-center gap-4">
-          {pills.map((pill, i) => (
-            <Pill key={i} variant="outlineDark" size="md">
-              {pill}
-            </Pill>
-          ))}
-        </div>
+      <div className="pl-0 sm:pl-[calc(64px+16px+16px+32px)] flex flex-wrap items-center gap-3 sm:gap-4 py-4 sm:py-6">
+        {pills.map((pill, i) => (
+          <Pill key={i} variant="outlineDark" size="md">
+            {pill}
+          </Pill>
+        ))}
       </div>
     </div>
   );

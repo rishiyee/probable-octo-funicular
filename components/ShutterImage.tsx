@@ -23,44 +23,56 @@ export default function ShutterImage({
   ratio = "4/4",
 }: ShutterImageProps) {
   const ref = useRef<HTMLDivElement | null>(null);
-  const [revealed, setRevealed] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setRevealed(true);
-          observer.unobserve(el); 
-        }
-      },
-      {
-        threshold: 0.15,
-      }
-    );
+    const onScroll = () => {
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
 
-    observer.observe(el);
-    return () => observer.disconnect();
+      /**
+       * TIMING (key fix)
+       * start: when image bottom touches viewport bottom
+       * end:   when image center reaches viewport center
+       */
+      const start = vh;
+      const end = vh / 2;
+
+      const raw = (start - rect.top) / (start - end);
+      const clamped = Math.min(Math.max(raw, 0), 1);
+
+      setProgress(clamped);
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const clipPath = revealed
-    ? `inset(0% 0% 0% 0%)`
-    : `inset(100% 0% 0% 0%)`;
+  // Shutter opens top → bottom
+  const clipPath = `inset(${(1 - progress) * 100}% 0% 0% 0%)`;
 
-  const ratioClass = ratioClassMap[ratio] ?? ratioClassMap["4/4"];
+  const ratioClass = ratioClassMap[ratio];
 
   return (
     <div ref={ref} className={`relative w-full overflow-hidden ${ratioClass}`}>
       <div
-        className="absolute inset-0 overflow-hidden will-change-[clip-path]"
+        className="absolute inset-0 will-change-[clip-path]"
         style={{
           clipPath,
-          transition: `clip-path 300ms cubic-bezier(.25,.46,.45,.94)`,
+          transition: "clip-path 0.08s linear",
         }}
       >
-        <Image src={src} alt={alt} fill className="object-cover" unoptimized />
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          className="object-cover"
+          unoptimized
+        />
       </div>
     </div>
   );
